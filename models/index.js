@@ -1,36 +1,30 @@
 'use strict';
-//our sequelize models will be defined here 
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
-const db = {};
+var fs        = require('fs');
+var path      = require('path');
+var Sequelize = require('sequelize');
+var basename  = path.basename(module.filename);
+var env       = process.env.NODE_ENV || 'development';
+var config    = require(__dirname + '/../config/config.json')[env];
+var db        = {};
 
-
-// this figures out which database should be used whether deployed on heroku ("production"
-// ) or locally ("development") run - will use appropriate configuration inside config.json
-let sequelize;
 if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+  var sequelize = new Sequelize(process.env[config.use_env_variable]);
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+  var sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-//goes through js files inside models folder and runs them through sequelize and exports an object to use to interface with sequelize in our other files
 fs
   .readdirSync(__dirname)
-  .filter(file => {
+  .filter(function(file) {
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
-  .forEach(file => {
-    const model = sequelize['import'](path.join(__dirname, file));
+  .forEach(function(file) {
+    var model = sequelize['import'](path.join(__dirname, file));
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(modelName => {
+Object.keys(db).forEach(function(modelName) {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
