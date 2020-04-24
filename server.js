@@ -11,6 +11,8 @@ const passport = require("./config/passport");
 const socketIO = require("socket.io");
 const moment = require("moment");
 
+const compression= require("compression");
+
 // Setting up port and requiring models for syncing
 var PORT = process.env.PORT || 8085;
 var db = require("./models");
@@ -26,6 +28,8 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(express.static(__dirname + "/public"));
 // We need to use sessions to keep track of our user's login status
+
+app.use(compression());
 app.use(
   session({ secret: "keyboard cat", resave: true, saveUninitialized: true })
 );
