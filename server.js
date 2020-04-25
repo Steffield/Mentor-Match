@@ -11,7 +11,7 @@ const passport = require("./config/passport");
 const socketIO = require("socket.io");
 const moment = require("moment");
 
-const compression= require("compression");
+const compression = require("compression");
 
 // Setting up port and requiring models for syncing
 var PORT = process.env.PORT || 8085;
